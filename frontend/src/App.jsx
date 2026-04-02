@@ -8,7 +8,7 @@ function App() {
   const [error, setError] = useState(null)
 
   // ←←← CAMBIA ESTA URL cuando tu backend esté listo
-  const API_URL = 'http://localhost:8080/api/empleados'
+  const API_URL = '/api/empleados'
 
   useEffect(() => {
     fetchEmpleados()
@@ -87,13 +87,6 @@ function App() {
               </table>
             </div>
           )}
-        </div>
-
-        <div className="footer">
-          <p>
-            Cuando tu backend esté listo, cambia la <code>API_URL</code> y haz clic en "Actualizar tabla".
-          </p>
-          <p><strong>Endpoint esperado:</strong> <code>GET {API_URL}</code></p>
         </div>
       </div>
     </>

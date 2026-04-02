@@ -31,6 +31,21 @@ git clone https://github.com/BenjaminArellano/DevopsCorporation.git
 
 cd DevopsCorporation
 
+# 1. AGREGAR ESTO: Entrar a la subcarpeta del backend
+cd backend 
+
+# 2. AGREGAR ESTE BLOQUE: Crear el properties con la IP inyectada
+cat <<EOF > src/main/resources/application.properties
+spring.application.name=backend
+spring.datasource.url=jdbc:mysql://${db_ip}:3306/empdb
+spring.datasource.username=Admin
+spring.datasource.password=Admin
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+server.port=8080
+EOF
+
 # Permisos Maven wrapper
 chmod +x mvnw
 
