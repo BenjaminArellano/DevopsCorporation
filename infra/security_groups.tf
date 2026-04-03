@@ -32,14 +32,14 @@ resource "aws_security_group" "back_sg" {
     from_port       = 8080
     to_port         = 8080
     protocol        = "tcp"
-    security_groups = [aws_security_group.front_sg.id]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    security_groups = [aws_security_group.front_sg.id]
+    cidr_blocks = ["186.189.85.171/32"]
   }
 
   egress {
