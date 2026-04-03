@@ -1,40 +1,22 @@
 #!/bin/bash
+# 1. Actualizar e instalar Java 21 (El estándar actual)
 apt update -y
+apt install -y openjdk-21-jdk git curl
 
-# Instalar herramientas base
-apt install -y git wget tar curl
-
-# Descargar OpenJDK 25 (Temurin)
-cd /opt
-wget https://github.com/adoptium/temurin25-binaries/releases/latest/download/OpenJDK25U-jdk_x64_linux_hotspot.tar.gz
-
-# Extraer
-tar -xzf OpenJDK25U-jdk_x64_linux_hotspot.tar.gz
-
-# Detectar carpeta
-JAVA_DIR=$(ls -d jdk-25*)
-
-# Configurar entorno global
-echo "export JAVA_HOME=/opt/$JAVA_DIR" > /etc/profile.d/java.sh
-echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile.d/java.sh
-
-# Aplicar variables
-export JAVA_HOME=/opt/$JAVA_DIR
+# 2. Configurar variables de entorno automáticamente
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
 
-# Verificar Java
-java -version
-
-# Clonar proyecto
+# 3. Clonar proyecto
 cd /home/ubuntu
+rm -rf DevopsCorporation
 git clone https://github.com/BenjaminArellano/DevopsCorporation.git
 
-cd DevopsCorporation
+# 4. Configurar el Backend
+cd DevopsCorporation/backend 
 
-# 1. AGREGAR ESTO: Entrar a la subcarpeta del backend
-cd backend 
-
-# 2. AGREGAR ESTE BLOQUE: Crear el properties con la IP inyectada
+# 5. Crear el archivo de propiedades
+mkdir -p src/main/resources
 cat <<EOF > src/main/resources/application.properties
 spring.application.name=backend
 spring.datasource.url=jdbc:mysql://${db_ip}:3306/empdb
@@ -46,11 +28,9 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
 server.port=8080
 EOF
 
-# Permisos Maven wrapper
+# 6. Permisos y ejecución
 chmod +x mvnw
+sleep 240
 
-# Esperar un poco por la DB (muy importante)
-sleep 30
-
-# Ejecutar backend en segundo plano
-nohup ./mvnw spring-boot:run > app.log 2>&1 &
+# 7. Ejecutar y guardar log en sitio seguro
+nohup ./mvnw spring-boot:run > /home/ubuntu/app.log 2>&1 &
