@@ -39,7 +39,7 @@ resource "aws_security_group" "back_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["186.189.85.171/32"]
+    security_groups = [aws_security_group.front_sg.id]
   }
 
   egress {
